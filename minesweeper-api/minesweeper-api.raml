@@ -1,0 +1,100 @@
+#%RAML 1.0
+title: Minesweeper API
+version: v1
+description: Minesweeper Rest API
+
+/games:
+  get:
+    description: Retrieve all game ids
+    responses:
+          200:
+            body:
+              application/json:
+                example: |
+                  [
+                    {
+                      "id": 1,
+                    },
+                    {
+                      "id": 2,
+                    }
+                  ]
+  post:
+    description: Starts a new game with given parameters
+    body:
+      application/json:
+        example: |
+        {
+          "rows": 10,
+          "columns": 10,
+          "mines": 10,
+        }
+  /{id}:
+    uriParameters:
+      id: number
+    get:
+      description: Retrieve game state
+      responses:
+        200:
+          body:
+            application/json:
+              example: |
+                {
+                  "id": 1,
+                  "mines": 8,
+                  "createdAt": 1594647124,
+                  "cells": [
+                    ["","","","","","",""],
+                    ["","","","","","",""],
+                    ["","","","","","",""],
+                    ["","","","","","",""],
+                    ["","","","","","",""],
+                    ["","","","","","",""]
+                  ]
+                }
+        404:
+          body:
+            application/json:
+              example: |
+                {
+                  "message": "Game not found"
+                }
+    /reveal:
+      post:
+        description: Reveals a cell
+        body:
+          application/json:
+            example: |
+            {
+              "row": 6,
+              "column": 7
+            }
+        responses:
+          200:
+            body:
+              application/json:
+                example: |
+                  {
+                    "message": "Cell revealed"
+                  }
+          400:
+            body:
+              application/json:
+                example: |
+                  {
+                    "message": "Invalid position"
+                  }
+    /flag:
+      post:
+        description: Flags a cell with question mark or red flag
+        body:
+          application/json:
+            example: |
+            {
+              "row": 6,
+              "column": 7
+            }
+        queryParameters:
+          question?:
+            type: boolean
+            required: false
