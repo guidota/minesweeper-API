@@ -45,6 +45,9 @@ public class GameController {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Game not found");
         }
         Game game = optionalGame.get();
+        if (game.getCell(position.getColumn(), position.getRow()).isRevealed()) {
+            return ResponseEntity.ok("Cell already revealed");
+        }
         if (game.reveal(position.getColumn(), position.getRow())) {
             return ResponseEntity.ok("Cell revealed");
         }

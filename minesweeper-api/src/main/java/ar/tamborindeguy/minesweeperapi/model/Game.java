@@ -13,8 +13,10 @@ import static ar.tamborindeguy.minesweeperapi.model.GameState.*;
 public class Game {
 
     private @Id String id;
-    private final int mines;
-    private final Cell[][] cells;
+    private int mines;
+    private Cell[][] cells;
+
+    public Game() {}
 
     public Game(int mines, int col, int rows) {
         this.mines = mines;
