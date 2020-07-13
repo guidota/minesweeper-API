@@ -1,12 +1,12 @@
 package ar.tamborindeguy.minesweeperapi.model;
 
-enum GameState {
+public enum GameState {
     WON("won"),
     LOST("lost"),
     NEW("new"),
     STARTED("started");
 
-    private String displayName;
+    private final String displayName;
 
     GameState(String displayName) {
         this.displayName = displayName;
