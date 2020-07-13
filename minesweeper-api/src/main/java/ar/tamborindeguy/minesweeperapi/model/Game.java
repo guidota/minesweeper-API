@@ -13,7 +13,7 @@ public class Game {
     private final int mines;
     private final Cell[][] cells;
 
-    private Game(int mines, int col, int rows) {
+    public Game(int mines, int col, int rows) {
         this.mines = mines;
         this.cells = new Cell[col][rows];
         initCells();
@@ -104,20 +104,27 @@ public class Game {
             setMines(col, row);
         }
 
+        doReveal(col, row);
+        return true;
+    }
+
+    private void doReveal(int col, int row) {
         Cell cell = getCell(col, row);
         if (!cell.isRevealed()) {
             cell.reveal();
+            if (adjacentMines(col, row) > 0) {
+                return;
+            }
             for (int i = -1; i <= 1; i++) {
                 int x = col + i;
                 for (int j = -1; j <= 1; j++) {
                     int y = row + j;
                     if (isValid(x, y) && !getCell(x, y).hasMine()) {
-                        reveal(col, row);
+                        doReveal(x, y);
                     }
                 }
             }
         }
-        return true;
     }
 
     public boolean flag(boolean question, int col, int row) {
