@@ -99,3 +99,18 @@ description: Minesweeper Rest API
           question?:
             type: boolean
             required: false
+        responses:
+          200:
+            body:
+              application/json:
+                example: |
+                  {
+                    "message": "Cell flagged"
+                  }
+          400:
+            body:
+              application/json:
+                example: |
+                  {
+                    "message": "Invalid position"
+                  }

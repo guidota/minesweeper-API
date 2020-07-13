@@ -1,5 +1,6 @@
 package ar.tamborindeguy.minesweeperapi;
 
+import static ar.tamborindeguy.minesweeperapi.model.GameState.NEW;
 import static org.hamcrest.MatcherAssert.assertThat;
 
 import ar.tamborindeguy.minesweeperapi.model.Game;
@@ -11,6 +12,24 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class GameTests {
+
+    @Test
+    public void newGameHasNoMines() {
+        Game game = new Game(10, 10, 10);
+        GameState state = game.getState();
+        assertThat("New game without moves should be NEW", state == GameState.NEW);
+
+        List<Cell> mines = new ArrayList<>();
+        for (int i = 0; i < game.getCols(); i++) {
+            for (int j = 0; j < game.getRows(); j++) {
+                Cell cell = game.getCell(i, j);
+                if (cell.hasMine()) {
+                    mines.add(cell);
+                }
+            }
+        }
+        assertThat("No mines should be present until first move", mines.size() == 0);
+    }
 
     @Test
     public void revealCellIsRevealed() {

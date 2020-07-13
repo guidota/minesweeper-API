@@ -2,14 +2,17 @@ package ar.tamborindeguy.minesweeperapi.model;
 
 import ar.tamborindeguy.minesweeperapi.model.cell.Cell;
 import ar.tamborindeguy.minesweeperapi.utils.Utils;
+import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.mapping.Document;
 
 import java.util.Arrays;
 
 import static ar.tamborindeguy.minesweeperapi.model.GameState.*;
 
+@Document(collection = "games")
 public class Game {
 
-    private String id;
+    private @Id String id;
     private final int mines;
     private final Cell[][] cells;
 
