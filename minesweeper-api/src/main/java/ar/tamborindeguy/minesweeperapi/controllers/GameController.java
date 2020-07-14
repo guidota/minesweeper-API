@@ -13,6 +13,7 @@ import org.springframework.web.server.ResponseStatusException;
 import java.util.List;
 import java.util.Optional;
 
+@CrossOrigin(origins = "*", allowedHeaders = "*")
 @RestController
 @RequestMapping("/games")
 public class GameController {
@@ -29,7 +30,7 @@ public class GameController {
     public ResponseEntity<?> newGame(@RequestBody GameParameters gameParameters) {
         Game game = new Game(gameParameters.getMines(), gameParameters.getColumns(), gameParameters.getRows());
         gameService.saveOrUpdateGame(game);
-        return ResponseEntity.ok("{ id: \"" + game.getId() + "\" }");
+        return ResponseEntity.ok("id: " + game.getId());
     }
 
     @GetMapping(value = "/{id}")
@@ -49,6 +50,7 @@ public class GameController {
             return ResponseEntity.ok("Cell already revealed");
         }
         if (game.reveal(position.getColumn(), position.getRow())) {
+            gameService.saveOrUpdateGame(game);
             return ResponseEntity.ok("Cell revealed");
         }
         return ResponseEntity.badRequest().body("Invalid Position");
@@ -61,7 +63,11 @@ public class GameController {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Game not found");
         }
         Game game = optionalGame.get();
+        if (game.getCell(position.getColumn(), position.getRow()).isRevealed()) {
+            return ResponseEntity.ok("Cell already flagged");
+        }
         if (game.flag(question.orElse(false), position.getColumn(), position.getRow())) {
+            gameService.saveOrUpdateGame(game);
             return ResponseEntity.ok(question.map((q) ->"Cell flagged").orElse("Cell marked"));
         }
         return ResponseEntity.badRequest().body("Invalid Position");

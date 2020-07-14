@@ -41,7 +41,7 @@ public class Game {
             int randomCol = Utils.getRandom(cols);
             int randomRow = Utils.getRandom(rows);
             Cell cell = getCell(randomCol, randomRow);
-            if (randomCol != col && randomRow != row && !cell.hasMine()) {
+            if (Utils.distance(col, row, randomCol, randomRow) > 2 && !cell.hasMine()) {
                 cell.setMine();
                 minesLeft--;
             }

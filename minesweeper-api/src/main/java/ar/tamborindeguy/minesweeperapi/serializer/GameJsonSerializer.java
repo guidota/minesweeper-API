@@ -30,18 +30,21 @@ public class GameJsonSerializer implements JsonSerializer<Game> {
         String cellString;
         GameState state = src.getState();
         Cell cell = src.getCell(col, row);
-        if (!cell.isRevealed() && state != GameState.WON && state != GameState.LOST) {
-            cellString = " ";
-        } else if (cell.hasMine()) {
-            cellString = "X";
-        } else if (cell.isRevealed()) {
-            int adjacentMines = src.adjacentMines(col, row);
-            cellString = adjacentMines == 0 ? "_" : String.valueOf(adjacentMines);
-        } else if (cell.isFlagged()) {
+        boolean gameFinished = state == GameState.WON || state == GameState.LOST;
+        if (cell.isFlagged() && state != GameState.LOST) {
             cellString = "F";
-        } else if (cell.isQuestion()){
+        } else if (cell.isQuestion() && state != GameState.LOST) {
             cellString = "?";
-        } else {
+        } else if (!cell.isRevealed() && !gameFinished) {
+            cellString = " ";
+        } else if (cell.isRevealed() || gameFinished) {
+            if (cell.hasMine()) {
+                cellString = "X";
+            } else {
+                int adjacentMines = src.adjacentMines(col, row);
+                cellString = adjacentMines == 0 ? "_" : String.valueOf(adjacentMines);
+            }
+        } else  {
             cellString = "_";
         }
         return cellString;
