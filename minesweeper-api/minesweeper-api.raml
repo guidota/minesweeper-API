@@ -5,7 +5,7 @@ description: Minesweeper Rest API
 
 /games:
   get:
-    description: Retrieve all game ids
+    description: Retrieve all games
     responses:
           200:
             body:
@@ -14,11 +14,39 @@ description: Minesweeper Rest API
                   [
                     {
                       "id": 1,
+                      "mines": 8,
+                      "cells": [
+                        ["","","","","","",""],
+                        ["","","","","","",""],
+                        ["","","","","","",""],
+                        ["","","","","","",""],
+                        ["","","","","","",""],
+                        ["","","","","","",""]
+                      ],
+                      state: "started"
                     },
                     {
-                      "id": 2,
+                      "id": 1,
+                      "mines": 8,
+                      "cells": [
+                        ["","","","","","",""],
+                        ["","","","","","",""],
+                        ["","","","","","",""],
+                        ["","","","","","",""],
+                        ["","","","","","",""],
+                        ["","","","","","",""]
+                      ],
+                      state: "started"
                     }
                   ]
+  delete:
+    description: Deletes a game
+    body:
+      application/json:
+        example: |
+        {
+          "id": "someId123"
+        }
   post:
     description: Starts a new game with given parameters
     body:
@@ -42,7 +70,6 @@ description: Minesweeper Rest API
                 {
                   "id": 1,
                   "mines": 8,
-                  "createdAt": 1594647124,
                   "cells": [
                     ["","","","","","",""],
                     ["","","","","","",""],

@@ -15,6 +15,44 @@ class GamesBloc extends Bloc<GamesEvent, GamesState> {
   ) async* {
     if (event is FetchEvent) {
       yield* _mapFetchToState();
+    } else if (event is DeleteEvent) {
+      yield* _mapDeleteToState(event);
+    } else if (event is CreateEvent) {
+      yield* _mapCreateToState(event);
+    }
+  }
+
+  Stream<GamesState> _mapCreateToState(CreateEvent event) async* {
+    try {
+      var res = await http.post(
+        "http://localhost:8081/games/",
+        body: json.encode({
+          "mines": event.mines,
+          "columns": event.columns,
+          "rows": event.rows,
+        }),
+        headers: {"Content-Type": "application/json"},
+      );
+      if (res.statusCode == 200) {
+        var body = json.decode(res.body);
+        yield NewGame(Game.fromJson(body));
+      }
+    } catch (e) {
+      print(e);
+      yield Failed();
+    }
+  }
+
+  Stream<GamesState> _mapDeleteToState(DeleteEvent event) async* {
+    try {
+      await http.delete(
+        "http://localhost:8081/games/" + event.id + "/",
+        headers: {"Content-Type": "application/json"},
+      );
+      add(FetchEvent());
+    } catch (e) {
+      print(e);
+      yield Failed();
     }
   }
 

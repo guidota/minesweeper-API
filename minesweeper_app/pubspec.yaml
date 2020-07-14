@@ -13,6 +13,7 @@ dependencies:
 
   http: ^0.12.1
   flutter_bloc: ^5.0.1
+  button_picker: ^0.1.0
 
 dev_dependencies:
   flutter_test:

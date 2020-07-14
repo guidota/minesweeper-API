@@ -27,16 +27,22 @@ public class GameController {
     }
 
     @PostMapping(value = "/")
-    public ResponseEntity<?> newGame(@RequestBody GameParameters gameParameters) {
+    public Game newGame(@RequestBody GameParameters gameParameters) {
         Game game = new Game(gameParameters.getMines(), gameParameters.getColumns(), gameParameters.getRows());
         gameService.saveOrUpdateGame(game);
-        return ResponseEntity.ok("id: " + game.getId());
+        return game;
     }
 
     @GetMapping(value = "/{id}")
     public Game game(@PathVariable("id") String id) {
         return gameService.findGameById(id)
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Game Not Found"));
+    }
+
+    @DeleteMapping(value="/{id}")
+    public ResponseEntity<?> deleteGame(@PathVariable("id") String id) {
+        gameService.deleteGame(id);
+        return ResponseEntity.ok("Game deleted");
     }
 
     @PostMapping(value="/{id}/reveal")

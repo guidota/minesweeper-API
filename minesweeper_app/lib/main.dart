@@ -44,7 +44,7 @@ class _MyHomePageState extends State<MyHomePage> {
           title: Text(widget.title),
         ),
         body: Center(
-          child: state is Fetching
+          child: state is Fetching || state is NewGame
               ? CircularProgressIndicator()
               : state is GamesInitial
                   ? Text("Try refreshing")
@@ -54,22 +54,25 @@ class _MyHomePageState extends State<MyHomePage> {
           FlatButton(
             child: Row(
               children: [
-                Icon(Icons.refresh),
                 Text("Refresh"),
+                Icon(Icons.refresh),
               ],
             ),
             onPressed: () => _fetchGames(context),
           ),
           FlatButton(
             child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
+                Text("New Game"),
                 Icon(Icons.add),
-                Text("Create Game"),
               ],
             ),
             onPressed: () => Navigator.of(context).push(
               MaterialPageRoute(
-                builder: (context) => NewGamePage(),
+                builder: (pageContext) => NewGamePage(
+                  gamesBloc: BlocProvider.of(context),
+                ),
               ),
             ),
           )
@@ -82,6 +85,10 @@ class _MyHomePageState extends State<MyHomePage> {
     BlocProvider.of<GamesBloc>(context).add(FetchEvent());
   }
 
+  _deleteGame(BuildContext context, String id) {
+    BlocProvider.of<GamesBloc>(context).add(DeleteEvent(id));
+  }
+
   Widget _buildGameList(Games state) {
     List<Game> games = state.games;
     return ListView.builder(
@@ -89,6 +96,10 @@ class _MyHomePageState extends State<MyHomePage> {
       itemBuilder: (context, index) => ListTile(
         title: Text('Game ' + index.toString()),
         subtitle: Text('id: ' + games[index].id),
+        trailing: FlatButton(
+          child: Icon(Icons.delete_outline),
+          onPressed: () => _deleteGame(context, games[index].id),
+        ),
         onTap: () => Navigator.push(
           context,
           MaterialPageRoute(

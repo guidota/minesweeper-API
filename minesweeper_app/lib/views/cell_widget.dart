@@ -27,6 +27,8 @@ class CellWidget extends StatelessWidget {
           onSecondaryTap: () =>
               !isRevealed() ? _flag(context, game.id, x, y) : null,
           child: Card(
+            elevation: isRevealed() ? 0 : 8,
+            color: isRevealed() ? Colors.grey[800] : Colors.grey[700],
             child: SizedBox(
               height: 32,
               width: 32,

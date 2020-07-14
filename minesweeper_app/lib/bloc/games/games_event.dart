@@ -5,6 +5,12 @@ abstract class GamesEvent {}
 
 class FetchEvent extends GamesEvent {}
 
+class DeleteEvent extends GamesEvent {
+  final String id;
+
+  DeleteEvent(this.id);
+}
+
 class CreateEvent extends GamesEvent {
   final int mines;
   final int rows;

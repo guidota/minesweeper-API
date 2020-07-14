@@ -14,4 +14,9 @@ class Games extends GamesState {
   Games(this.games);
 }
 
+class NewGame extends GamesState {
+  final Game game;
+  NewGame(this.game);
+}
+
 class Failed extends GamesState {}
