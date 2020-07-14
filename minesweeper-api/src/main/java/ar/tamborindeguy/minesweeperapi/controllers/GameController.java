@@ -21,12 +21,12 @@ public class GameController {
     @Autowired
     private GameService gameService;
 
-    @GetMapping(value = "/")
+    @GetMapping(value = "")
     public List<Game> games() {
         return gameService.findAll();
     }
 
-    @PostMapping(value = "/")
+    @PostMapping(value = "")
     public Game newGame(@RequestBody GameParameters gameParameters) {
         Game game = new Game(gameParameters.getMines(), gameParameters.getColumns(), gameParameters.getRows());
         gameService.saveOrUpdateGame(game);
