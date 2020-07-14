@@ -39,14 +39,6 @@ description: Minesweeper Rest API
                       state: "started"
                     }
                   ]
-  delete:
-    description: Deletes a game
-    body:
-      application/json:
-        example: |
-        {
-          "id": "someId123"
-        }
   post:
     description: Starts a new game with given parameters
     body:
@@ -87,6 +79,8 @@ description: Minesweeper Rest API
                 {
                   "message": "Game not found"
                 }
+    delete:
+        description: Deletes a game
     /reveal:
       post:
         description: Reveals a cell
@@ -94,8 +88,8 @@ description: Minesweeper Rest API
           application/json:
             example: |
             {
-              "row": 6,
-              "column": 7
+              "row": "6",
+              "column": "7"
             }
         responses:
           200:
