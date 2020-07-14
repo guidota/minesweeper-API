@@ -4,6 +4,7 @@ import 'package:bloc/bloc.dart';
 import 'package:http/http.dart' as http;
 import 'package:minesweeper_app/model/game.dart';
 import 'dart:convert';
+import '../../main.dart';
 import 'bloc.dart';
 
 class GameBloc extends Bloc<GameEvent, GameState> {
@@ -25,7 +26,7 @@ class GameBloc extends Bloc<GameEvent, GameState> {
   Stream<GameState> _mapRevealToState(RevealEvent event) async* {
     try {
       final res = await http.post(
-        "http://localhost:8081/games/" + event.id + '/reveal/',
+        baseUrl + "games/" + event.id + '/reveal/',
         body: json.encode(
             {"column": event.col.toString(), "row": event.row.toString()}),
         headers: {"Content-Type": "application/json"},
@@ -46,7 +47,7 @@ class GameBloc extends Bloc<GameEvent, GameState> {
   Stream<GameState> _mapFlagToState(FlagEvent event) async* {
     try {
       final res = await http.post(
-        "http://localhost:8081/games/" + event.id + '/flag/',
+        baseUrl + "games/" + event.id + '/flag/',
         body: json.encode(
             {"column": event.col.toString(), "row": event.row.toString()}),
         headers: {"Content-Type": "application/json"},
@@ -67,8 +68,7 @@ class GameBloc extends Bloc<GameEvent, GameState> {
   Stream<GameState> _mapFetchToState(FetchEvent event) async* {
     yield Fetching();
     try {
-      final res = await http.get(
-          "http://localhost:8081/games/" + event.id + '/',
+      final res = await http.get(baseUrl + "games/" + event.id + '/',
           headers: {"Accept": "application/json"});
       if (res.statusCode == 200) {
         var body = json.decode(res.body);

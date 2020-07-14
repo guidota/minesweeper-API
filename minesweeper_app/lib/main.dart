@@ -10,6 +10,8 @@ void main() {
   runApp(MyApp());
 }
 
+const String baseUrl = "https://bref-mandarine-95959.herokuapp.com/";
+
 class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
@@ -94,7 +96,7 @@ class _MyHomePageState extends State<MyHomePage> {
     return ListView.builder(
       itemCount: games.length,
       itemBuilder: (context, index) => ListTile(
-        title: Text('Game ' + index.toString()),
+        title: Text('Game ' + games[index].state),
         subtitle: Text('id: ' + games[index].id),
         trailing: FlatButton(
           child: Icon(Icons.delete_outline),

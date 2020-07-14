@@ -78,65 +78,67 @@ class Board extends StatelessWidget {
       },
       buildWhen: (previous, current) =>
           previous is Fetching && current is GameFetched,
-      builder: (context, state) => Column(
-        crossAxisAlignment: CrossAxisAlignment.center,
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          (state is GameFetched)
-              ? Row(
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: Text(
-                        "Mines: " + (state).game.mines.toString(),
-                      ),
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: Text("Game: " + (state).game.state),
-                    ),
-                  ],
-                )
-              : Container(),
-          Container(
-            child: state is GameFetched
-                ? Column(
+      builder: (context, state) => SingleChildScrollView(
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.center,
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            (state is GameFetched)
+                ? Row(
                     crossAxisAlignment: CrossAxisAlignment.center,
                     mainAxisAlignment: MainAxisAlignment.center,
-                    children: (state)
-                        .game
-                        .cells
-                        .asMap()
-                        .map(
-                          (y, row) => MapEntry(
-                            y,
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              crossAxisAlignment: CrossAxisAlignment.center,
-                              children: row
-                                  .asMap()
-                                  .map(
-                                    (x, cell) => MapEntry(
-                                        x,
-                                        CellWidget(
-                                            game: (state).game,
-                                            cell: cell,
-                                            x: x,
-                                            y: y)),
-                                  )
-                                  .values
-                                  .toList(),
-                            ),
-                          ),
-                        )
-                        .values
-                        .toList(),
+                    children: [
+                      Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: Text(
+                          "Mines: " + (state).game.mines.toString(),
+                        ),
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: Text("Game: " + (state).game.state),
+                      ),
+                    ],
                   )
-                : Center(child: CircularProgressIndicator()),
-          ),
-        ],
+                : Container(),
+            Container(
+              child: state is GameFetched
+                  ? Column(
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: (state)
+                          .game
+                          .cells
+                          .asMap()
+                          .map(
+                            (y, row) => MapEntry(
+                              y,
+                              Row(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                crossAxisAlignment: CrossAxisAlignment.center,
+                                children: row
+                                    .asMap()
+                                    .map(
+                                      (x, cell) => MapEntry(
+                                          x,
+                                          CellWidget(
+                                              game: (state).game,
+                                              cell: cell,
+                                              x: x,
+                                              y: y)),
+                                    )
+                                    .values
+                                    .toList(),
+                              ),
+                            ),
+                          )
+                          .values
+                          .toList(),
+                    )
+                  : Center(child: CircularProgressIndicator()),
+            ),
+          ],
+        ),
       ),
     );
   }

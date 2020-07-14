@@ -4,6 +4,7 @@ import 'package:bloc/bloc.dart';
 import 'package:http/http.dart' as http;
 import 'package:minesweeper_app/model/game.dart';
 import 'dart:convert';
+import '../../main.dart';
 import 'bloc.dart';
 
 class GamesBloc extends Bloc<GamesEvent, GamesState> {
@@ -25,7 +26,7 @@ class GamesBloc extends Bloc<GamesEvent, GamesState> {
   Stream<GamesState> _mapCreateToState(CreateEvent event) async* {
     try {
       var res = await http.post(
-        "http://localhost:8081/games/",
+        baseUrl + "games",
         body: json.encode({
           "mines": event.mines,
           "columns": event.columns,
@@ -46,7 +47,7 @@ class GamesBloc extends Bloc<GamesEvent, GamesState> {
   Stream<GamesState> _mapDeleteToState(DeleteEvent event) async* {
     try {
       await http.delete(
-        "http://localhost:8081/games/" + event.id + "/",
+        baseUrl + "games/" + event.id + "/",
         headers: {"Content-Type": "application/json"},
       );
       add(FetchEvent());
@@ -59,8 +60,8 @@ class GamesBloc extends Bloc<GamesEvent, GamesState> {
   Stream<GamesState> _mapFetchToState() async* {
     yield Fetching();
     try {
-      final res = await http.get("http://localhost:8081/games/",
-          headers: {"Accept": "application/json"});
+      final res = await http
+          .get(baseUrl + "games", headers: {"Accept": "application/json"});
       if (res.statusCode == 200) {
         var body = json.decode(res.body);
         print(body);
