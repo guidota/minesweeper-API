@@ -25,7 +25,7 @@ class GameBloc extends Bloc<GameEvent, GameState> {
 
   Stream<GameState> _mapRevealToState(RevealEvent event) async* {
     try {
-      final res = await http.post(
+      final res = await http.put(
         baseUrl + "games/" + event.id + '/reveal/',
         body: json.encode(
             {"column": event.col.toString(), "row": event.row.toString()}),
@@ -46,7 +46,7 @@ class GameBloc extends Bloc<GameEvent, GameState> {
 
   Stream<GameState> _mapFlagToState(FlagEvent event) async* {
     try {
-      final res = await http.post(
+      final res = await http.put(
         baseUrl + "games/" + event.id + '/flag/',
         body: json.encode(
             {"column": event.col.toString(), "row": event.row.toString()}),

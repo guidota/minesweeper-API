@@ -45,7 +45,7 @@ public class GameController {
         return ResponseEntity.ok("Game deleted");
     }
 
-    @PostMapping(value="/{id}/reveal")
+    @PutMapping(value="/{id}/reveal")
     public ResponseEntity<?> reveal(@PathVariable String id, @RequestBody Position position) {
         Optional<Game> optionalGame = gameService.findGameById(id);
         if (optionalGame.isEmpty()) {
@@ -62,7 +62,7 @@ public class GameController {
         return ResponseEntity.badRequest().body("Invalid Position");
     }
 
-    @PostMapping(value="/{id}/flag")
+    @PutMapping(value="/{id}/flag")
     public ResponseEntity<?> flag(@PathVariable String id, @RequestBody Position position, @RequestParam Optional<Boolean> question) {
         Optional<Game> optionalGame = gameService.findGameById(id);
         if (optionalGame.isEmpty()) {
